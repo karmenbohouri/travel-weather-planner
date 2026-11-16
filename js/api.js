@@ -41,7 +41,7 @@ async function getExchangeRates() {
     };
 }
 
-//Test echange rates
+//Test exchange rates
 getExchangeRates()
      .then(result => console.log(result))
      .catch(error => console.error(error));
