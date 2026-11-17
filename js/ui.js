@@ -22,7 +22,7 @@ function renderCities(items) {
     }
 
     container.innerHTML = "";
-    if (items.lengh === 0) {
+    if (items.length === 0) {
         container.textContent = "No city found";
         return;
     }
@@ -38,7 +38,12 @@ function renderCities(items) {
         country.textContent = city.country;
 
         const temperature = document.createElement("p");
-        temperature.textContent = `${city.temperature}°C`;
+
+        if (city.temperature === "N/A") {
+            temperature.textContent = "Weather unavailable";
+        } else {
+            temperature.textContent = `${city.temperature}°C`;
+        }
 
         const weather = document.createElement("p");
         weather.textContent = describeWeather(city.weatherCode);
