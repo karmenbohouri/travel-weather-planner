@@ -124,7 +124,7 @@ const cities = [
         country: "Morocco",
         countryCode: "MA",
         latitude: 33.58831,
-        longitude: -761138,
+        longitude: -7.61138,
         currency: "MAD"
     },
     {

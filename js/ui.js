@@ -48,10 +48,24 @@ function renderCities(items) {
         const weather = document.createElement("p");
         weather.textContent = describeWeather(city.weatherCode);
 
+        const exchange = document.createElement("p");
+
+        if (city.currency === "XOF") {
+            exchange.textContent = "Local currency: FCFA";
+        } else if (city.exchangeRate === undefined) {
+            exchange.textContent = "Rate unavailable";
+        } else {
+            const convertedAmount = (city.exchangeRate * 1000)
+                .toLocaleString("en-US", { maximumFractionDigits: 2 });
+
+            exchange.textContent =  `1,000 FCFA = ${convertedAmount} ${city.currency}`;   
+        }
+
         card.appendChild(name);
         card.appendChild(country);
         card.appendChild(temperature);
         card.appendChild(weather);
+        card.appendChild(exchange);
 
         container.appendChild(card);
     });
