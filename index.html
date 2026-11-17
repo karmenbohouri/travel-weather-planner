@@ -7,6 +7,34 @@
 </head>
 <body>
     <h1>Travel Weather Planner</h1>
+    <div class="controls">
+        <input
+            type="text"
+            id="search"
+            placeholder="Search for a city..."
+        >
+        
+        <select id="country-filter">
+            <option value="All countries">All countries</option>
+            <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+            <option value="Rwanda">Rwanda</option>
+            <option value="Ghana">Ghana</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Morocco">Morocco</option>
+            <option value="Egypt">Egypt</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Canada">Canada</option>
+            <option value="United Kingdom">United Kingdom</option>
+        </select>
+
+        <select id="sort">
+            <option value="name">Sort by name</option>
+            <option value="temp-asc">Temperature: lowest first</option>
+            <option value="temp-desc">Temperature: highest first</option>
+        </select>
+    </div>
+
     <div id="cities"></div>
 
     <script src="js/cities.js"></script>

@@ -22,6 +22,10 @@ function renderCities(items) {
     }
 
     container.innerHTML = "";
+    if (items.lengh === 0) {
+        container.textContent = "No city found";
+        return;
+    }
 
     items.forEach(city => {
         const card = document.createElement("div");
