@@ -1,15 +1,15 @@
 function describeWeather(code) {
-    if (code === 0) return "Clear sky";
+    if (code === 0) return "☀️ Clear sky";
     
-    if (code >= 1 && code <= 3) return "Cloudy";
+    if (code >= 1 && code <= 3) return "☁️ Cloudy";
     
-    if (code === 45 || code === 48) return "Fog";
+    if (code === 45 || code === 48) return "🌫️ Fog";
     
-    if (code >= 51 && code <=67) return "Rain";
+    if (code >= 51 && code <=67) return "🌧️ Rain";
     
-    if (code >= 80 && code <= 82) return "Showers";
+    if (code >= 80 && code <= 82) return "🌦️ Showers";
     
-    if (code >= 95 && code <= 99) return "Thunderstorm";
+    if (code >= 95 && code <= 99) return "⛈️ Thunderstorm";
 
     return "Unknown";
 }
@@ -35,20 +35,25 @@ function renderCities(items) {
         name.textContent = city.name;
 
         const country = document.createElement("p");
+        country.className = "country";
         country.textContent = city.country;
 
         const temperature = document.createElement("p");
+        temperature.className = "temperature";
 
         if (city.temperature === "N/A") {
             temperature.textContent = "Weather unavailable";
+            temperature.classList.add("unavailable");
         } else {
             temperature.textContent = `${city.temperature}°C`;
         }
 
         const weather = document.createElement("p");
+        weather.className = "weather";
         weather.textContent = describeWeather(city.weatherCode);
 
         const exchange = document.createElement("p");
+        exchange.className = "exchange";
 
         if (city.currency === "XOF") {
             exchange.textContent = "Local currency: FCFA";

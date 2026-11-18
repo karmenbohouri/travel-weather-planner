@@ -1,5 +1,124 @@
+* {
+    box-sizing: border-box;
+}
+:root { 
+    color-scheme: dark;
+    
+    --bg-main: #1d1d20;
+    --bg-secondary: #26262A;
+
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.08);
+
+    --text-primary: #F4F4F5;
+    --text-secondary: #9A9A9F;
+
+    --accent-warm: #E0A23A;
+    --accent-cool: #4AA3F0;
+
+    --radius: 20px;
+    --gap: 16px;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px;
+    
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(74, 163, 240, 0.08),
+            transparent 35%
+        ),
+        var(--bg-main);
+   
+        color: var(--text-primary);
+    font-family: "Inter", sans-serif;
+}
 #cities {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
+}
+.city-card {
+    padding: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.city-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-cool);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+.temperature {
+    font-size: 3rem;
+    font-weight: 300;
+    margin: 8px 0;
+}
+.country,
+.weather,
+.exchange {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+.exchange {
+    color: var(--accent-warm);
+}
+.city-card p {
+    margin: 4px 0;
+}
+.unavailable {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+.controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.controls input,
+.controls select {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+.controls input::placeholder {
+    color: var(--text-secondary);
+}
+.controls input:focus-visible,
+.controls select:focus-visible {
+    outline: 2px solid var(--accent-cool);
+    outline-offset: 2px;
+}
+.controls select option {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+footer {
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+footer a {
+    color: var(--accent-cool);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
