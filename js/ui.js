@@ -1,10 +1,23 @@
 function describeWeather(code) {
     if (code === 0) return "☀️ Clear sky";
     
-    if (code >= 1 && code <= 3) return "☁️ Cloudy";
+    if (code === 1) return "🌤️ Mostly clear";
+
+    if (code === 2) return "⛅ Partly cloudy";
+
+    if (code === 3) return "☁️ Overcast";
     
     if (code === 45 || code === 48) return "🌫️ Fog";
     
+    if (
+        code === 71 ||
+        code === 73 ||
+        code === 75 ||
+        code === 77 ||
+        code === 85 ||
+        code === 86
+    ) return "❄️ Snow"
+
     if (code >= 51 && code <=67) return "🌧️ Rain";
     
     if (code >= 80 && code <= 82) return "🌦️ Showers";
@@ -30,6 +43,18 @@ function renderCities(items) {
     items.forEach(city => {
         const card = document.createElement("div");
         card.className = "city-card";
+
+        if (city.temperature !== "N/A") {
+            const temperature = Number(city.temperature);
+
+            if(temperature < 15) {
+                card.classList.add("cool");
+            } else if (temperature < 25) {
+                card.classList.add("mild");
+            } else {
+                card.classList.add("hot");
+            }
+        }
 
         const name = document.createElement("h2");
         name.textContent = city.name;

@@ -11,15 +11,28 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Travel Weather Planner</h1>
+    <header class="hero">
+        <p class="eyebrow">Travel Weather Planner</p>
+
+        <h1>Explore the world. Know the weather.</h1>
+
+        <p class="subtitle">
+            Check current weather conditions and exchange rates
+            across destinations around the world.
+        </p>
+
+        <div class="stats" id="stats"></div>
+    </header>
+
     <div class="controls">
         <input
             type="text"
             id="search"
             placeholder="Search for a city..."
+            aria-label="Search for city"
         >
         
-        <select id="country-filter">
+        <select id="country-filter" aria-label="Filter by country">
             <option value="All countries">All countries</option>
             <option value="Côte d'Ivoire">Côte d'Ivoire</option>
             <option value="Rwanda">Rwanda</option>
@@ -33,10 +46,10 @@
             <option value="United Kingdom">United Kingdom</option>
         </select>
 
-        <select id="sort">
+        <select id="sort" aria-label="Sort cities">
             <option value="name">Sort by name</option>
-            <option value="temp-asc">Temperature: lowest first</option>
-            <option value="temp-desc">Temperature: highest first</option>
+            <option value="temp-asc">Temp: low to high</option>
+            <option value="temp-desc">Temp: high to low</option>
         </select>
     </div>
 
@@ -49,13 +62,13 @@
 
     <footer>
         Weather data provided by 
-        <a href="https://open-meteo.com/" target="_blank">
-            Open-Meteo
-        </a>
-        . Exchange rates provided by
-        <a href="https://www.exchangerate-api.com/" target="_blank">
-            ExchangeRate-API
-        </a>
+        <a href="https://open-meteo.com/"
+           target="_blank"
+           rel="noopener noreferrer">Open-Meteo</a>.
+        Exchange rates provided by 
+        <a href="https://www.exchangerate-api.com/" 
+           target="_blank"
+           rel="noopener noreferrer">ExchangeRate-API</a>
     </footer>
     
 </body>

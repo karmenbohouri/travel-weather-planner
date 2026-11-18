@@ -41,6 +41,9 @@ async function loadCities() {
         // Store all cities
         allCities = cityItems;
 
+        // Display statistics
+        renderStats();
+
         // Display cities using current filters
         updateDisplay();
 
@@ -50,6 +53,67 @@ async function loadCities() {
 
         console.error("Loading error:", error);
     }
+}
+
+function renderStats() {
+    const statsContainer = document.getElementById("stats");
+
+    statsContainer.textContent = "";
+
+    // Count destinations
+    const totalCities = allCities.length;
+
+    // Count unique countries
+    const totalCountries = new Set(
+        allCities.map(city => city.country)
+    ).size;
+
+    // Create destination pill
+    const destinationPill = document.createElement("span");
+    destinationPill.className = "pill";
+    destinationPill.textContent = `${totalCities} destinations`;
+
+    // Create country pill
+    const countryPill = document.createElement("span");
+    countryPill.className = "pill";
+    countryPill.textContent = `${totalCountries} countries`;
+
+    statsContainer.append(destinationPill, countryPill);
+
+    // Keep only cities with valid tempeatures
+    const validCities = allCities.filter(city =>
+        city.temperature !== "N/A" &&
+        Number.isFinite(Number(city.temperature))
+    );
+
+    // Stop if no valid temperature exist
+    if (validCities.length === 0) {
+        return;
+    }
+
+    // Find hottest city
+    const hottestCity = validCities.reduce((a, b) => 
+        Number(a.temperature) > Number(b.temperature) ? a : b
+    );
+
+    // Find coldest city
+    const coldestCity = validCities.reduce((a, b) =>
+        Number(a.temperature) < Number(b.temperature) ? a : b
+    );
+
+    // Create hottest pill
+    const hottestPill = document.createElement("span");
+    hottestPill.className = "pill pill-hot";
+    hottestPill.textContent =
+        `Hottest: ${hottestCity.name} (${hottestCity.temperature}°C)`;
+
+    // Create coldest pill
+    const coldestPill = document.createElement("span");
+    coldestPill.className = "pill pill-cold";
+    coldestPill.textContent =
+         `Coldest: ${coldestCity.name} (${coldestCity.temperature}°C)`;
+
+    statsContainer.append(hottestPill, coldestPill);
 }
 // Search when the user types
 document.getElementById("search")
