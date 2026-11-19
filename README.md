@@ -1,103 +1,328 @@
 # Travel Weather Planner
 
-A responsive web app that compares the current weather and the value of 1,000 FCFA (West African CFA franc) across 20 cities in 10 countries. It is built with plain HTML, CSS and JavaScript: no framework, no backend and no API keys.
+A responsive web application that helps users compare current weather conditions and currency values across 20 cities in 10 countries.
 
-## Features
+The application displays real-time weather information and shows how much foreign currency 1,000 XOF (West African CFA franc) is worth in each supported city.
 
-- Current temperature and weather conditions for 20 cities (Côte d'Ivoire, Rwanda, Ghana, Nigeria, Kenya, Morocco, Egypt, South Africa, Canada, United Kingdom)
-- Value of 1,000 FCFA in each city's local currency
-- Search by city name
-- Filter by country
-- Sort by name or by temperature (lowest or highest first)
-- Summary at the top of the page: number of destinations and countries, hottest and coldest city
-- Weather icons and a card tint that reflects the temperature (cool, mild, hot)
-- Clear error states: unavailable weather for a single city, unavailable exchange rates, and no search results
-- Responsive layout that works on phones
+Built with HTML, CSS, and vanilla JavaScript, using external REST APIs.
 
-## APIs used
+## Live Demo
 
-### Open-Meteo (weather and geocoding)
+- **Deployed application:** `[ADD LOAD BALANCER URL HERE]`
+- **Demo video (maximum 2 minutes):** `[ADD VIDEO LINK HERE]`
 
-- Website: https://open-meteo.com
-- Used for: current temperature and weather code from a city's coordinates. The geocoding endpoint was also used during development to find accurate coordinates for each city.
-- API key: none required.
-- Terms: free for non-commercial use, which fits this educational project.
-- Usage: the app sends one weather request per city (20) each time the page loads.
+## Project Overview
 
-### ExchangeRate-API (exchange rates)
+Travel Weather Planner helps users explore weather conditions and compare currency values across different international destinations.
 
-- Website: https://www.exchangerate-api.com
-- Endpoint: `https://open.er-api.com/v6/latest/XOF`
-- Used for: exchange rates from the CFA franc (XOF), converted for 1,000 FCFA.
-- API key: none required for this open endpoint.
-- Limits: rates are refreshed once per day, and clients that call the endpoint too often can be rate limited. The app sends a single request per page load.
-- Attribution: required by the provider, and shown in the page footer.
+It is designed for people who want a quick overview of weather conditions and an estimate of currency exchange values before travelling or comparing destinations.
 
-### Why these APIs
+### Main Features
 
-Both are well documented, widely used, require no account or secret key (so nothing sensitive is stored in the repository), and return JSON over HTTPS. Their documentation and terms of use were read before use.
+- Weather information for 20 cities across 10 countries.
+- Current temperature and weather conditions.
+- Currency conversion based on 1,000 XOF.
+- Search cities by name.
+- Filter cities by country.
+- Sort cities alphabetically.
+- Sort cities by temperature in ascending or descending order.
+- Dynamic statistics based on the displayed cities.
+- Weather-related visual indicators and card styles.
+- Responsive interface for desktop, tablet, and mobile devices.
+- Error handling for unavailable weather data and exchange rates.
 
-## How it works
+## Technologies Used
 
-1. On load, the app requests the exchange rates once.
-2. It requests the weather for every city in parallel with `Promise.allSettled`, so one failing city does not block the others.
-3. Each city is merged with its weather and exchange rate and kept in memory.
-4. Search, filter and sort always start from the full in-memory list and re-render the cards, so changing a control never triggers new API calls.
+- **HTML5:** Application structure.
+- **CSS3:** Styling, responsive layout, and visual presentation.
+- **JavaScript (Vanilla):** Application logic, API requests, filtering, sorting, and rendering.
+- **Open-Meteo API:** Weather information.
+- **ExchangeRate-API:** Currency exchange rates.
+- **Nginx:** Web server for deployment.
 
-## Run locally
+No frontend framework or backend framework is required.
+
+## APIs Used
+
+### 1. Open-Meteo API
+
+**Purpose:** Retrieve current weather information for the supported cities.
+
+- API website: https://open-meteo.com/
+- Official documentation: https://open-meteo.com/en/docs
+- Authentication: No API key required for the weather endpoint used by this project.
+- Data retrieved: Current temperature and weather condition codes.
+
+The application uses the geographical coordinates stored in `js/cities.js` to request weather information.
+
+Weather requests are made for the supported cities when the application loads.
+
+The Open-Meteo geocoding service was also used during development to verify city locations and coordinates. It is not required for the application's normal runtime because the coordinates are stored in the project.
+
+### 2. ExchangeRate-API
+
+**Purpose:** Retrieve exchange rates using XOF as the base currency.
+
+- API website: https://www.exchangerate-api.com/
+- Endpoint: https://open.er-api.com/v6/latest/XOF
+- Authentication: No API key required for the endpoint used by this project.
+- Data retrieved: Currency exchange rates and the next scheduled update timestamp.
+
+The application retrieves the exchange-rate data once when the page loads and uses it to calculate the equivalent value of 1,000 XOF for each supported currency.
+
+The application does not require users to enter API keys.
+
+## How the Application Works
+
+1. The application loads the list of supported cities from `js/cities.js`.
+2. It requests exchange-rate information from ExchangeRate-API.
+3. It requests weather information from Open-Meteo for the supported cities.
+4. Weather requests are handled using `Promise.allSettled()` so that one failed request does not prevent other cities from displaying.
+5. The retrieved information is combined with the city data and stored in memory.
+6. The application renders the city cards and statistics.
+7. Search, filtering, and sorting operations update the displayed results using the data already loaded.
+
+## Running the Application Locally
+
+### Requirements
+
+- Git
+- Python 3 installed on your computer
+- A modern web browser
+- Internet connection to access the external APIs
+
+### Installation
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/karmenbohouri/travel-weather-planner.git
+```
+
+Navigate into the project directory:
+
+```bash
 cd travel-weather-planner
+```
+
+Start a local development server:
+
+```bash
 python -m http.server 8000
 ```
 
-Then open http://localhost:8000 in your browser.
+Open the following address in your browser:
 
-Use a local server instead of opening `index.html` directly: browsers block network requests from `file://` pages.
-
-## Project structure
-
+```text
+http://localhost:8000
 ```
+
+A local HTTP server is recommended because browsers may restrict network requests when an application is opened directly using the `file://` protocol.
+
+## Project Structure
+
+```text
 travel-weather-planner/
-├── index.html          # page structure, controls and footer
+│
+├── index.html
+├── README.md
+├── .gitignore
+│
 ├── css/
-│   └── style.css       # theme, grid layout, cards, responsive rules
+│   └── style.css
+│
 ├── js/
-│   ├── cities.js       # list of cities with coordinates, country and currency
-│   ├── api.js          # getWeather() and getExchangeRates()
-│   ├── ui.js           # weather descriptions/icons and card rendering
-│   └── main.js         # loading, search, filter, sort and summary
-├── codevibe-reports/   # CodeVibe report
-└── README.md
+│   ├── cities.js
+│   ├── api.js
+│   ├── ui.js
+│   └── main.js
+│
+└── codevibe-reports/
 ```
 
-## Error handling
+### Main Files
 
-- If the weather request fails for one city, its card shows "Weather unavailable" and the rest of the page keeps working.
-- If the exchange rates cannot be loaded, the page shows a clear message instead of an empty screen.
-- If a search or filter matches nothing, the page shows "No city found".
-- Cities without a valid temperature are placed last when sorting by temperature.
+- `index.html`: Main application page.
+- `css/style.css`: Application styling and responsive layout.
+- `js/cities.js`: City information, coordinates, countries, and currencies.
+- `js/api.js`: External API requests and response validation.
+- `js/ui.js`: Weather descriptions and city card rendering.
+- `js/main.js`: Application initialization, data loading, search, filtering, and sorting.
 
-## Challenges and solutions
+## Error Handling
 
-- **Wrong coordinates.** A missing decimal point in one longitude produced an HTTP 400 error for Casablanca. Reading the failing URL in the browser console revealed it. Some place names were also ambiguous in the geocoding API (for example Musanze is returned as Ruhengeri, and one search for Rusizi returned a different district), so each city was checked by its region before being added.
-- **Misleading CORS error.** An invalid request URL (template variables written inside normal quotes instead of backticks) caused a 403 response, and the browser reported it as a CORS problem. Checking the actual request URL showed the real cause.
-- **Partial failures.** `Promise.all` would reject everything if one request failed, so `Promise.allSettled` is used to keep the other cities.
-- **Weather codes.** Open-Meteo returns numeric WMO codes, so a small mapping translates them into readable descriptions and icons.
+The application includes error handling for several situations:
 
-## Deployment (Part Two)
+- **Weather API failure:** A city can display a weather-unavailable message without preventing other cities from loading.
+- **Exchange-rate API failure:** Currency values that cannot be retrieved are displayed as unavailable.
+- **Invalid API responses:** The application checks HTTP responses and validates important data before using it.
+- **Empty search results:** A message informs the user when no city matches the search or selected filter.
 
-_To be completed after deployment._
+These measures help the application remain usable when some external data is unavailable.
 
-- Web01: `<address or IP>`
-- Web02: `<address or IP>`
-- Load balancer (Lb01): `<address or IP>`
-- Web server and load balancer configuration: `<short description>`
+## Testing
 
-## Credits
+The application was tested locally to verify its main features.
 
-- Weather data: [Open-Meteo](https://open-meteo.com)
-- Exchange rates: [ExchangeRate-API](https://www.exchangerate-api.com)
-- Font: [Inter](https://fonts.google.com/specimen/Inter) via Google Fonts
-- The application code was written manually. As allowed by the assignment, AI assistance was used only for this README.
+The following checks were performed:
+
+- Loading all 20 supported cities.
+- Checking the distribution of cities across 10 countries.
+- Retrieving weather information.
+- Retrieving currency exchange rates.
+- Searching for cities by name.
+- Filtering cities by country.
+- Sorting cities alphabetically.
+- Sorting cities by temperature in ascending and descending order.
+- Handling unavailable data.
+- Checking the responsive layout on mobile, tablet, and desktop screen sizes.
+
+### Deployment Testing
+
+The following deployment checks must be completed after configuring the two web servers and the load balancer:
+
+| Test | Result |
+|---|---|
+| Application accessible on Web01 | `[PENDING TEST]` |
+| Application accessible on Web02 | `[PENDING TEST]` |
+| Load balancer accessible | `[PENDING TEST]` |
+| Traffic distributed between Web01 and Web02 | `[PENDING TEST]` |
+| Application functional through the load balancer | `[PENDING TEST]` |
+
+## Deployment
+
+The application is intended to run on two web servers, Web01 and Web02, behind a dedicated load balancer, Lb01.
+
+The deployment information below must be completed with the actual commands, configurations, and test results after deployment.
+
+### 1. Web01 Deployment
+
+- Server: Web01
+- Server address: `32.192.231.221`
+- Application URL: `[ADD WEB01 URL HERE]`
+
+**Deployment steps:**
+
+`[ADD THE ACTUAL COMMANDS USED TO COPY OR CLONE THE PROJECT, CONFIGURE NGINX, AND DEPLOY THE APPLICATION.]`
+
+**Verification:**
+
+`[ADD THE COMMANDS AND RESULTS USED TO VERIFY THAT THE APPLICATION WORKS ON WEB01.]`
+
+### 2. Web02 Deployment
+
+- Server: Web02
+- Server address: `98.93.200.142`
+- Application URL: `[ADD WEB02 URL HERE]`
+
+**Deployment steps:**
+
+`[ADD THE ACTUAL COMMANDS USED TO DEPLOY THE APPLICATION AND CONFIGURE NGINX ON WEB02.]`
+
+**Verification:**
+
+`[ADD THE COMMANDS AND RESULTS USED TO VERIFY THAT THE APPLICATION WORKS ON WEB02.]`
+
+### 3. Load Balancer Configuration
+
+- Server: Lb01
+- Server address: `35.175.242.143`
+- Public application URL: `[ADD LOAD BALANCER URL HERE]`
+
+**Configuration:**
+
+`[ADD THE ACTUAL LOAD BALANCER CONFIGURATION, INCLUDING THE WEB01 AND WEB02 BACKEND SERVERS.]`
+
+**Verification:**
+
+`[EXPLAIN HOW THE LOAD BALANCER WAS TESTED AND HOW TRAFFIC DISTRIBUTION BETWEEN THE TWO WEB SERVERS WAS VERIFIED.]`
+
+### Deployment Architecture
+
+```text
+                 User
+                   |
+                   v
+             Load Balancer
+                  Lb01
+                   |
+            ----------------
+            |              |
+            v              v
+          Web01          Web02
+            |              |
+            v              v
+       Travel Weather Planner
+```
+
+## Challenges and Solutions
+
+### 1. Incorrect Geographical Coordinates
+
+Some incorrect coordinate values caused HTTP 400 errors when requesting weather information.
+
+**Solution:** The coordinates were checked and corrected using geographical information from Open-Meteo.
+
+### 2. City Geocoding Ambiguities
+
+Some city names returned alternative or historical location names during geocoding.
+
+**Solution:** The geographical coordinates were verified before being stored in the city dataset.
+
+### 3. JavaScript Template Literals
+
+A formatting issue occurred because template variables were used inside ordinary quotation marks instead of template literals.
+
+**Solution:** The affected strings were corrected using JavaScript backticks.
+
+### 4. Handling Multiple API Requests
+
+Using `Promise.all()` could cause the entire weather-loading operation to fail if one city request failed.
+
+**Solution:** `Promise.allSettled()` was used to allow successful city requests to complete even when some requests fail.
+
+### 5. Weather Condition Codes
+
+The weather API returns numerical weather codes rather than descriptive weather names.
+
+**Solution:** A `describeWeather()` function was implemented to translate the relevant weather codes into readable descriptions and visual indicators.
+
+## API Keys and Credentials
+
+This project uses public API endpoints that do not require API keys or user authentication.
+
+- Open-Meteo weather endpoint: No API key required.
+- ExchangeRate-API open-access endpoint: No API key required.
+
+There are no application login credentials because the project does not implement user authentication.
+
+Server access credentials are not stored in the source code or public repository.
+
+## Security
+
+- No API keys or passwords are hardcoded in the application.
+- External API requests use HTTPS.
+- API responses are checked before their data is used.
+- City information is rendered using DOM methods and `textContent` rather than inserting untrusted API values directly as HTML.
+
+## Credits and Resources
+
+- [Open-Meteo](https://open-meteo.com/) — Weather data and documentation.
+- [ExchangeRate-API](https://www.exchangerate-api.com/) — Currency exchange-rate data.
+- [Inter Font](https://fonts.google.com/specimen/Inter) — Typography.
+
+## AI Assistance
+
+AI assistance was used during parts of the development process for explanations, code review, debugging support, and README preparation. The development and testing process included reviewing and verifying the application's functionality.
+
+## Author
+
+**Karmen Bohouri**
+
+GitHub: https://github.com/karmenbohouri
+
+---
+
+**Project:** Travel Weather Planner  
+**Type:** Responsive Web Application  
+**Technologies:** HTML, CSS, JavaScript, REST APIs, Nginx
