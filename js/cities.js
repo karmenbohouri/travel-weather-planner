@@ -8,7 +8,7 @@ const cities = [
         currency: "XOF"
     },
     {
-       name: "Yamoussoukro",
+        name: "Yamoussoukro",
         country: "Côte d'Ivoire",
         countryCode: "CI",
         latitude: 6.82055,
@@ -16,7 +16,7 @@ const cities = [
         currency: "XOF" 
     },
     {
-        name: "Bouake",
+        name: "Bouaké",
         country: "Côte d'Ivoire",
         countryCode: "CI",
         latitude: 7.693851,
@@ -24,7 +24,7 @@ const cities = [
         currency: "XOF"
     },
     {
-        name: "San-Pedro",
+        name: "San-Pédro",
         country: "Côte d'Ivoire",
         countryCode: "CI",
         latitude: 4.74851,
@@ -152,7 +152,7 @@ const cities = [
         currency: "CAD"
     },
     {
-       name: "London",
+        name: "London",
         country: "United Kingdom",
         countryCode: "GB",
         latitude: 51.50853,

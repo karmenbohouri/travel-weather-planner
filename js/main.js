@@ -6,8 +6,15 @@ async function loadCities() {
     container.textContent = "Loading...";
 
     try {
-        // Fetch exchange rtes only once
-        const exchangeData = await getExchangeRates();
+        // Fetch exchange rates only once
+        let exchangeRates = {};
+
+        try {
+            const exchangeData = await getExchangeRates();
+            exchangeRates = exchangeData.rates;
+        } catch (error) {
+            console.error("Exchange rates error:", error);
+        }
 
         // Fetch weather for all cities
         const weatherResults = await Promise.allSettled(
@@ -20,12 +27,12 @@ async function loadCities() {
         const cityItems = cities.map((city, index) => {
             const result = weatherResults[index];
 
-            if(result.status === "fulfilled") {
+            if (result.status === "fulfilled") {
                 return {
                     ...city,
                     temperature: result.value.temperature,
                     weatherCode: result.value.weatherCode,
-                    exchangeRate: exchangeData.rates[city.currency]
+                    exchangeRate: exchangeRates[city.currency]
                 };
             }
 
@@ -34,7 +41,7 @@ async function loadCities() {
                 ...city,
                 temperature: "N/A",
                 weatherCode: -1,
-                exchangeRate: exchangeData.rates[city.currency]
+                exchangeRate: exchangeRates[city.currency]
             };
         });
 
@@ -49,7 +56,7 @@ async function loadCities() {
 
     } catch (error) {
         container.textContent =
-             "Unable to load exchange rates. Please try again later.";
+             "Unable to load weather data. Please try again later.";
 
         console.error("Loading error:", error);
     }
@@ -80,13 +87,13 @@ function renderStats() {
 
     statsContainer.append(destinationPill, countryPill);
 
-    // Keep only cities with valid tempeatures
+    // Keep only cities with valid temperatures
     const validCities = allCities.filter(city =>
         city.temperature !== "N/A" &&
         Number.isFinite(Number(city.temperature))
     );
 
-    // Stop if no valid temperature exist
+    // Stop if no valid temperatures exist
     if (validCities.length === 0) {
         return;
     }
@@ -150,7 +157,7 @@ function updateDisplay() {
     // Filter by country
     if (selectedCountry !== "All countries") {
         filteredCities = filteredCities.filter(city =>
-            city.country == selectedCountry
+            city.country === selectedCountry
         );
     }
 
